@@ -33,6 +33,9 @@
     background-color: white;
     border-radius: 50%;
     /*rounds the edges*/
+    transition: transform 2s ease-in-out;
+    /*transition for transforming*/
+
   }
 </style>
 
@@ -59,7 +62,17 @@
   const textbox = document.getElementById("textbox");
   const text = document.getElementById("text");
   const circle = document.getElementById("circle");
+  let grow = true;
 
+  function oscillate() {
+      if (grow) {
+          circle.style.transform = 'scale(1.2)';
+      } else {
+          circle.style.transform = 'scale(0.5)';
+      }
+      grow = !grow;  // Toggle the state
+  }
+  
   function update_circle() {
     circle.style.position = 'absolute';
     circle.style.left = ((window.innerWidth / 2) - (circle.offsetWidth / 2)) + 'px';
@@ -103,6 +116,14 @@
       circle.style.height = "400px";
       update_circle();
       textbox.value = "Perfect. Now let's animate it";
+    }
+    let interval;
+    if (x === 7) {
+      textbox.value = "Pause the animation.";
+      interval = setInterval(oscillate, 2000);
+    }
+    if (x === 8) {
+      clearInterval(interval);
     }
     x++;
   }
