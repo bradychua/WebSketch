@@ -12,7 +12,7 @@
     width: 100px;
     height: 50px;
   }
-  
+
   input {
     display: none;
     width: 500px;
@@ -21,10 +21,18 @@
     position: absolute;
     bottom: 0;
   }
-  
+
   p {
     text-align: center;
     color: white;
+  }
+
+  .circle {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    /*rounds the edges*/
   }
 </style>
 
@@ -36,9 +44,10 @@
   <body>
     <h1 id="title">Welcome to My Website</h1>
     <input type="text" id="textbox" placeholder="Today I am going to build my website. First let me add a title.">
-    <p id='text'>
+    <p id="text">
       This is my web sketch. Thanks for checking it out.
     </p>
+    <div id="circle" class="circle"></div>
     <button id="button" onclick="move()">Click Me!</button>
   </body>
 </html>
@@ -49,9 +58,18 @@
   const title = document.getElementById("title");
   const textbox = document.getElementById("textbox");
   const text = document.getElementById("text");
+  const circle = document.getElementById("circle");
+
+  function update_circle() {
+    circle.style.position = 'absolute';
+    circle.style.left = ((window.innerWidth / 2) - (circle.offsetWidth / 2)) + 'px';
+    circle.style.top = ((window.innerHeight / 2) - (circle.offsetHeight / 2)) + 'px';
+  }
+  update_circle();
+
   function move() {
     button.style.left = Math.random() * (window.innerWidth - button.clientWidth) + 'px';
-    button.style.top = Math.random() * (window.innerHeight - button.clientHeight)/2 + 'px';
+    button.style.top = Math.random() * (window.innerHeight - button.clientHeight) / 2 + 'px';
     if (x === 0) {
       textbox.style.display = "block";
     }
@@ -63,11 +81,28 @@
       document.body.style.backgroundColor = "blue";
       text.style.color = "blue";
       title.style.color = "white";
+      circle.style.backgroundColor = "blue";
       textbox.value = "Okay let me add some text."
     }
     if (x === 3) {
       text.style.color = "white";
-      textbox.value = "Now time to create an image.";
+      textbox.value = "Now let's add a circle.";
+    }
+    if (x === 4) {
+      circle.style.backgroundColor = "white";
+      textbox.value = "Bigger.";
+    }
+    if (x === 5) {
+      circle.style.width = "700px";
+      circle.style.height = "700px";
+      update_circle();
+      textbox.value = "Too big...make it smaller.";
+    }
+    if (x === 6) {
+      circle.style.width = "400px";
+      circle.style.height = "400px";
+      update_circle();
+      textbox.value = "Perfect. Now let's animate it";
     }
     x++;
   }
