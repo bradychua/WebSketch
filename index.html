@@ -1,12 +1,13 @@
 <style>
   h1 {
     text-align: center;
+    /*centers the text*/
     color: white;
   }
 
   button {
     position: relative;
-    /*allows position movement*/
+    /*allows button to move*/
     transition: top 0.4s, left 0.4s;
     /*transition for movement*/
     width: 100px;
@@ -15,6 +16,7 @@
 
   input {
     display: none;
+    /*hides textbox*/
     width: 500px;
     height: 100px;
     font-size: 18px;
@@ -32,8 +34,8 @@
     height: 60px;
     background-color: white;
     border-radius: 50%;
-    /*rounds the edges*/
-    transition: transform 2s ease-in-out;
+    /*rounds the edges to make circle*/
+    transition: transform 2s;
     /*transition for transforming*/
 
   }
@@ -63,28 +65,40 @@
   const text = document.getElementById("text");
   const circle = document.getElementById("circle");
   let grow = true;
+  let color_change = false;
 
-  function oscillate() {
-      if (grow) {
-          circle.style.transform = 'scale(1.2)';
-      } else {
-          circle.style.transform = 'scale(0.5)';
-      }
-      grow = !grow;  // Toggle the state
-  }
-  
   function update_circle() {
     circle.style.position = 'absolute';
     circle.style.left = ((window.innerWidth / 2) - (circle.offsetWidth / 2)) + 'px';
     circle.style.top = ((window.innerHeight / 2) - (circle.offsetHeight / 2)) + 'px';
   }
-  update_circle();
+
+  function color() {
+    return Math.floor(Math.random() * 256);
+  }
+
+  function oscillate() {
+    if (grow) {
+      circle.style.transform = 'scale(1.2)';
+    } else {
+      circle.style.transform = 'scale(0.5)';
+    }
+    if (color_change) {
+      const randomColor = "rgb(" + color() + "," + color() + "," + color() + ")"; //generates random color
+      circle.style.backgroundColor = randomColor;
+    }
+    grow = !grow; //changes between shrinking and growing
+  }
+
+
+
+  let interval;
 
   function move() {
     button.style.left = Math.random() * (window.innerWidth - button.clientWidth) + 'px';
     button.style.top = Math.random() * (window.innerHeight - button.clientHeight) / 2 + 'px';
     if (x === 0) {
-      textbox.style.display = "block";
+      textbox.style.display = "block"; //reveals hidden textbox
     }
     if (x === 1) {
       title.style.color = "black";
@@ -102,6 +116,7 @@
       textbox.value = "Now let's add a circle.";
     }
     if (x === 4) {
+      update_circle();
       circle.style.backgroundColor = "white";
       textbox.value = "Bigger.";
     }
@@ -117,12 +132,27 @@
       update_circle();
       textbox.value = "Perfect. Now let's animate it";
     }
-    let interval;
     if (x === 7) {
       textbox.value = "Pause the animation.";
-      interval = setInterval(oscillate, 2000);
+      interval = setInterval(oscillate, 2000); //repeatedly executes function
     }
     if (x === 8) {
+      clearInterval(interval); //stops the repeated execution of function
+      textbox.value = "Now let's make it randomly change   colors whike oscillating.";
+    }
+    if (x === 9) {
+      color_change = true;
+      interval = setInterval(oscillate, 2000);
+      textbox.value = "Pause the animation.";
+    }
+    if (x === 10) {
+      clearInterval(interval);
+      textbox.value = "All done! Press button to start and stop animation.";
+    }
+    if (x > 10 && x % 2 === 1) {
+      interval = setInterval(oscillate, 2000);
+    }
+    if (x > 10 && x % 2 === 0) {
       clearInterval(interval);
     }
     x++;
